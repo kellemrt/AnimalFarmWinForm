@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AnimalFarmDb.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ANIMAL_LIST">
+    <Key>
+      <PropertyRef Name="ANIMAL_ID" />
+    </Key>
+    <Property Name="ANIMAL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ANIMAL_CODE" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="ANIMAL_KIND" Type="nvarchar" MaxLength="50" />
+    <Property Name="ANIMAL_SAVEDATE" Type="datetime" />
+    <Property Name="ANIMAL_NOTE" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="ANIMAL_VECCINE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VECCINE_ANIMAL_ID" Type="int" Nullable="false" />
+    <Property Name="VECCINE_DATE" Type="datetime" Nullable="false" />
+    <Property Name="VECCINE_KIND" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="ANIMAL_WEIGHT_BEHAVE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ANIMAL_ID" Type="int" Nullable="false" />
+    <Property Name="ANIMAL_WEIGHT" Type="numeric" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="ANIMAL_WEIGHT_DATE" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PRODUCTS">
+    <Key>
+      <PropertyRef Name="PRODUCTS_ID" />
+    </Key>
+    <Property Name="PRODUCTS_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PRODUCTS_NAME" Type="nvarchar" MaxLength="50" />
+    <Property Name="PRODUCTS_UNIT" Type="nvarchar" MaxLength="50" />
+    <Property Name="PRODUCTS_DATE" Type="smalldatetime" />
+    <Property Name="PRODUCTS_QUANTITY" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="USERS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="USER_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="USER_PASSWORD" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="USER_KIND" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_ANIMAL_VECCINE_ANIMAL_LIST">
+    <End Role="ANIMAL_LIST" Type="Self.ANIMAL_LIST" Multiplicity="1" />
+    <End Role="ANIMAL_VECCINE" Type="Self.ANIMAL_VECCINE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ANIMAL_LIST">
+        <PropertyRef Name="ANIMAL_ID" />
+      </Principal>
+      <Dependent Role="ANIMAL_VECCINE">
+        <PropertyRef Name="VECCINE_ANIMAL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ANIMAL_WEIGHT_BEHAVE_ANIMAL_LIST">
+    <End Role="ANIMAL_LIST" Type="Self.ANIMAL_LIST" Multiplicity="1" />
+    <End Role="ANIMAL_WEIGHT_BEHAVE" Type="Self.ANIMAL_WEIGHT_BEHAVE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ANIMAL_LIST">
+        <PropertyRef Name="ANIMAL_ID" />
+      </Principal>
+      <Dependent Role="ANIMAL_WEIGHT_BEHAVE">
+        <PropertyRef Name="ANIMAL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AnimalFarmDbStoreContainer">
+    <EntitySet Name="ANIMAL_LIST" EntityType="Self.ANIMAL_LIST" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ANIMAL_VECCINE" EntityType="Self.ANIMAL_VECCINE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ANIMAL_WEIGHT_BEHAVE" EntityType="Self.ANIMAL_WEIGHT_BEHAVE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCTS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="USERS" EntityType="Self.USERS" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ANIMAL_VECCINE_ANIMAL_LIST" Association="Self.FK_ANIMAL_VECCINE_ANIMAL_LIST">
+      <End Role="ANIMAL_LIST" EntitySet="ANIMAL_LIST" />
+      <End Role="ANIMAL_VECCINE" EntitySet="ANIMAL_VECCINE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ANIMAL_WEIGHT_BEHAVE_ANIMAL_LIST" Association="Self.FK_ANIMAL_WEIGHT_BEHAVE_ANIMAL_LIST">
+      <End Role="ANIMAL_LIST" EntitySet="ANIMAL_LIST" />
+      <End Role="ANIMAL_WEIGHT_BEHAVE" EntitySet="ANIMAL_WEIGHT_BEHAVE" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

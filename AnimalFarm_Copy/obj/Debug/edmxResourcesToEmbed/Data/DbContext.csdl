@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AnimalFarmDb" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="VDB_BESIEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="USERS" EntityType="AnimalFarmDb.USER" />
+    <EntitySet Name="ANIMAL_LIST" EntityType="AnimalFarmDb.ANIMAL_LIST" />
+    <EntitySet Name="ANIMAL_WEIGHT_BEHAVE" EntityType="AnimalFarmDb.ANIMAL_WEIGHT_BEHAVE" />
+    <AssociationSet Name="FK_ANIMAL_WEIGHT_BEHAVE_ANIMAL_LIST" Association="AnimalFarmDb.FK_ANIMAL_WEIGHT_BEHAVE_ANIMAL_LIST">
+      <End Role="ANIMAL_LIST" EntitySet="ANIMAL_LIST" />
+      <End Role="ANIMAL_WEIGHT_BEHAVE" EntitySet="ANIMAL_WEIGHT_BEHAVE" />
+    </AssociationSet>
+    <EntitySet Name="ANIMAL_VECCINE" EntityType="AnimalFarmDb.ANIMAL_VECCINE" />
+    <AssociationSet Name="FK_ANIMAL_VECCINE_ANIMAL_LIST" Association="AnimalFarmDb.FK_ANIMAL_VECCINE_ANIMAL_LIST">
+      <End Role="ANIMAL_LIST" EntitySet="ANIMAL_LIST" />
+      <End Role="ANIMAL_VECCINE" EntitySet="ANIMAL_VECCINE" />
+    </AssociationSet>
+    <EntitySet Name="sysdiagrams" EntityType="AnimalFarmDb.sysdiagram" />
+    <EntitySet Name="PRODUCTS" EntityType="AnimalFarmDb.PRODUCT" />
+  </EntityContainer>
+  <EntityType Name="USER">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="USER_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="USER_PASSWORD" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="USER_KIND" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ANIMAL_LIST">
+    <Key>
+      <PropertyRef Name="ANIMAL_ID" />
+    </Key>
+    <Property Name="ANIMAL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ANIMAL_CODE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ANIMAL_KIND" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ANIMAL_SAVEDATE" Type="DateTime" Precision="3" />
+    <Property Name="ANIMAL_NOTE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ANIMAL_WEIGHT_BEHAVE" Relationship="AnimalFarmDb.FK_ANIMAL_WEIGHT_BEHAVE_ANIMAL_LIST" FromRole="ANIMAL_LIST" ToRole="ANIMAL_WEIGHT_BEHAVE" />
+    <NavigationProperty Name="ANIMAL_VECCINE" Relationship="AnimalFarmDb.FK_ANIMAL_VECCINE_ANIMAL_LIST" FromRole="ANIMAL_LIST" ToRole="ANIMAL_VECCINE" />
+  </EntityType>
+  <EntityType Name="ANIMAL_WEIGHT_BEHAVE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ANIMAL_ID" Type="Int32" Nullable="false" />
+    <Property Name="ANIMAL_WEIGHT" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="ANIMAL_WEIGHT_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="ANIMAL_LIST" Relationship="AnimalFarmDb.FK_ANIMAL_WEIGHT_BEHAVE_ANIMAL_LIST" FromRole="ANIMAL_WEIGHT_BEHAVE" ToRole="ANIMAL_LIST" />
+  </EntityType>
+  <Association Name="FK_ANIMAL_WEIGHT_BEHAVE_ANIMAL_LIST">
+    <End Type="AnimalFarmDb.ANIMAL_LIST" Role="ANIMAL_LIST" Multiplicity="1" />
+    <End Type="AnimalFarmDb.ANIMAL_WEIGHT_BEHAVE" Role="ANIMAL_WEIGHT_BEHAVE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ANIMAL_LIST">
+        <PropertyRef Name="ANIMAL_ID" />
+      </Principal>
+      <Dependent Role="ANIMAL_WEIGHT_BEHAVE">
+        <PropertyRef Name="ANIMAL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ANIMAL_VECCINE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VECCINE_ANIMAL_ID" Type="Int32" Nullable="false" />
+    <Property Name="VECCINE_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="VECCINE_KIND" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ANIMAL_LIST" Relationship="AnimalFarmDb.FK_ANIMAL_VECCINE_ANIMAL_LIST" FromRole="ANIMAL_VECCINE" ToRole="ANIMAL_LIST" />
+  </EntityType>
+  <Association Name="FK_ANIMAL_VECCINE_ANIMAL_LIST">
+    <End Type="AnimalFarmDb.ANIMAL_LIST" Role="ANIMAL_LIST" Multiplicity="1" />
+    <End Type="AnimalFarmDb.ANIMAL_VECCINE" Role="ANIMAL_VECCINE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ANIMAL_LIST">
+        <PropertyRef Name="ANIMAL_ID" />
+      </Principal>
+      <Dependent Role="ANIMAL_VECCINE">
+        <PropertyRef Name="VECCINE_ANIMAL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="PRODUCT">
+    <Key>
+      <PropertyRef Name="PRODUCTS_ID" />
+    </Key>
+    <Property Name="PRODUCTS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PRODUCTS_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PRODUCTS_UNIT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PRODUCTS_DATE" Type="DateTime" Precision="0" />
+    <Property Name="PRODUCTS_QUANTITY" Type="Int32" />
+  </EntityType>
+</Schema>
